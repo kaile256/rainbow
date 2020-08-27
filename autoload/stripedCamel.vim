@@ -76,22 +76,17 @@ function! s:lcm(a, b)
 endfunction
 
 function! s:gen_conf(ft)
-  let g = exists('g:stripedCamel_conf') ? g:stripedCamel_conf : {}
-  "echom 'g:stripedCamel_conf:' string(g)
+  let g = get(g:, 'stripedCamel_conf', {})
   let s = get(g, 'filetype', {})
-  "echom 'g:stripedCamel_conf.filetype:' string(s)
-  let dft_conf = extend(copy(s:stripedCamel_conf), g) | unlet dft_conf.filetype
-  "echom 'default config options:' string(dft_conf)
+  let dft_conf = extend(copy(s:stripedCamel_conf), g)
+  unlet dft_conf.filetype
+
   let dx_conf = s:stripedCamel_conf.filetype['_']
-  "echom 'default star config:' string(dx_conf)
   let ds_conf = get(s:stripedCamel_conf.filetype, a:ft, dx_conf)
-  "echom 'default filetype config:' string(ds_conf)
-  let ux_conf = get(s, '*', ds_conf)
-  "echom 'user star config:' string(ux_conf)
+  let ux_conf = get(s, '_', ds_conf)
   let us_conf = get(s, a:ft, ux_conf)
-  "echom 'user filetype config:' string(us_conf)
-  let af_conf = (s:eq(us_conf, 'default') ? ds_conf : us_conf)
-  "echom 'almost finally config:' string(af_conf)
+  let af_conf = s:eq(us_conf, 'default') ? ds_conf : us_conf
+
   if s:eq(af_conf, 0)
     return 0
   else
