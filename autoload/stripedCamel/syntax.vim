@@ -120,7 +120,11 @@ function! stripedCamel#syntax#syn(config)
   exe 'syn cluster' prefix .'Operators contains='.
         \ join(map(range(cycle),
         \ '"@". s:synGroupID(prefix, "Operators", v:val)'), ',')
-  if has_key(conf, 'after') | for cmd in conf.after | exe cmd | endfor | endif
+  if has_key(conf, 'after') | return | endif
+
+  for cmd in conf.after
+    exe cmd
+  endfor
 endfunction
 
 function! stripedCamel#syntax#syn_clear(config)
