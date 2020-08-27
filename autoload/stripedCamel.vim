@@ -4,13 +4,13 @@ let s:stripedCamel_conf = {
       \ 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
       \ 'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
       \ 'contains_prefix': 'TOP',
-      \ 'parentheses_options': '',
-      \ 'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+      \ 'syntax_border': ['\u[a-z0-9_]'],
+      \ 'syntax_options': '',
       \ 'filetype': {
       \   '_': {},
       \   'vim': {
-      \     'parentheses_options': 'containedin=vimFuncBody,vimExecute',
-      \     'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold'],
+      \     'syntax_border': ['#\zs\w\{-}'],
+      \     'syntax_options': 'containedin=vimFunction,vimVar',
       \   },
       \ }
       \}
