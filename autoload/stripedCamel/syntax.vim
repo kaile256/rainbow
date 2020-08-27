@@ -60,13 +60,19 @@ function! stripedCamel#syntax#syn(config)
       let [rid, pid, gid2] = [s:synID(prefix, 'r', lv, id), s:synID(prefix, 'p', lv, id), s:synGroupID(prefix, 'Regions', lv2)]
 
       if len(op) > 2
-        exe 'syn match '.s:synID(prefix, 'o', lv, id).' '.op.' containedin='.s:synID(prefix, 'r', lv, id).' contained'
+        exe 'syn match' s:synID(prefix, 'o', lv, id) op
+              \ 'containedin='. s:synID(prefix, 'r', lv, id) 'contained'
       endif
 
-      let real_contained = (lv == 0)? (contained? 'contained ' : '') : 'contained '
-      let real_containedin = (lv == 0)? s:concat([containedin, '@'.gid2]) : '@'.gid2
+      let real_contained = lv == 0 ? (contained ? 'contained' : '') : 'contained'
+      let real_containedin = lv == 0 ? s:concat([containedin, '@'. gid2]) : '@'. gid2
       let real_contains = s:concat([contains_prefix, contains])
-      exe 'syn region '.rid.' matchgroup='.pid.' '.real_contained.'containedin='.real_containedin.' contains='.real_contains.' '.paren
+      exe 'syn region' rid
+            \ 'matchgroup='. pid
+            \ real_contained
+            \ 'containedin='. real_containedin
+            \ 'contains='. real_contains
+            \ paren
     endfor
   endfor
   for lv in range(cycle)
