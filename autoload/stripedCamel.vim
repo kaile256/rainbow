@@ -75,7 +75,7 @@ function! s:lcm(a, b)
   return (a:a / s:gcd(a:a, a:b)) * a:b
 endfunction
 
-function! stripedCamel#gen_config(ft)
+function! s:gen_conf(ft)
   let g = exists('g:stripedCamel_conf') ? g:stripedCamel_conf : {}
   "echom 'g:stripedCamel_conf:' string(g)
   let s = get(g, 'filetype', {})
@@ -101,12 +101,12 @@ function! stripedCamel#gen_config(ft)
   endif
 endfunction
 
-function! stripedCamel#gen_configs(ft)
-  return filter(map(split(a:ft, '\v\.'), 'stripedCamel#gen_config(v:val)'), 'type(v:val) == type({})')
+function! s:gen_configs(ft)
+  return filter(map(split(a:ft, '\v\.'), 's:gen_conf(v:val)'), 'type(v:val) == type({})')
 endfunction
 
 function! stripedCamel#load()
-  let b:stripedCamel_confs = stripedCamel#gen_configs(&filetype)
+  let b:stripedCamel_confs = s:gen_configs(&filetype)
   for conf in b:stripedCamel_confs
     call stripedCamel#syntax#syn(conf)
     call stripedCamel#syntax#hi(conf)
