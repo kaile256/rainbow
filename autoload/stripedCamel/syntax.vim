@@ -54,10 +54,15 @@ function! stripedCamel#syntax#syn(config)
   let glob_paran_opts = s:resolve_parenthesis_from_config(conf)
   let b:stripedCamel_loaded = cycle
   for id in range(len(conf.syntax_border))
-    let [paren, contained, containedin, contains_prefix, contains, op] = s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
+    let [paren, contained, containedin, contains_prefix, contains, op] =
+          \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
     for lv in range(cycle)
       let lv2 = ((lv + cycle - 1) % cycle)
-      let [rid, pid, gid2] = [s:synID(prefix, 'r', lv, id), s:synID(prefix, 'p', lv, id), s:synGroupID(prefix, 'Regions', lv2)]
+      let [rid, pid, gid2] = [
+            \ s:synID(prefix, 'r', lv, id),
+            \ s:synID(prefix, 'p', lv, id),
+            \ s:synGroupID(prefix, 'Regions', lv2)
+            \ ]
 
       if len(op) > 2
         exe 'syn match' s:synID(prefix, 'o', lv, id) op
