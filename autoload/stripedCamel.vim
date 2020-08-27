@@ -90,14 +90,18 @@ function! s:gen_conf(ft)
   if s:eq(af_conf, 0)
     return 0
   else
-    let conf = extend(extend({'syn_name_prefix': substitute(a:ft, '\v\A+(\a)', '\u\1', 'g').'stripedCamel'}, dft_conf), af_conf)
-    let conf.cycle = (has('gui_running') || (has('termguicolors') && &termguicolors)) ? s:lcm(len(conf.guifgs), len(conf.guis)) : s:lcm(len(conf.ctermfgs), len(conf.cterms))
+    let conf = extend(extend({'syn_name_prefix': substitute(a:ft, '\v\A+(\a)', '\u\1', 'g') .'stripedCamel'}, dft_conf), af_conf)
+    let conf.cycle = (has('termguicolors') && &termguicolors)
+          \ || has('gui_running')
+          \ ? s:lcm(len(conf.guifgs), len(conf.guis))
+          \ : s:lcm(len(conf.ctermfgs), len(conf.cterms))
     return conf
   endif
 endfunction
 
 function! s:gen_configs(ft)
-  return filter(map(split(a:ft, '\v\.'), 's:gen_conf(v:val)'), 'type(v:val) == type({})')
+  return filter(map(split(a:ft, '\v\.'), 's:gen_conf(v:val)'),
+        \ 'type(v:val) == type({})')
 endfunction
 
 function! stripedCamel#load()
