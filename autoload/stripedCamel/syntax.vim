@@ -9,12 +9,30 @@ function! s:concat(strs)
 endfunction
 
 function! s:resolve_parenthesis_with(init_state, p)
-  let [paren, contained, containedin, contains_prefix, contains, op] = a:init_state
-  let p = (type(a:p) == type([])) ? ((len(a:p) == 3) ? printf('start=#%s# step=%s end=#%s#', a:p[0], op, a:p[-1]) : printf('start=#%s# end=#%s#', a:p[0], a:p[-1])) : a:p "NOTE: preprocess the old style syntax_border config
+  let [
+        \ paren,
+        \ contained,
+        \ containedin,
+        \ contains_prefix,
+        \ contains,
+        \ op] =
+        \ a:init_state
 
-  let ls = split(p, '\v%(%(start|step|end)\=(.)%(\1@!.)*\1[^ ]*|\w+%(\=[^ ]*)?) ?\zs', 0)
+  let p = type(a:p) == type([])
+        \ ? (len(a:p) == 3
+        \   ? printf('start=#%s# step=%s end=#%s#', a:p[0], op, a:p[-1])
+        \   : printf('start=#%s# end=#%s#', a:p[0], a:p[-1]))
+        \ : a:p "NOTE: preprocess the old style syntax_border config
+
+  let ls = split(p,
+        \ '\v%(%(start|step|end)\=(.)%(\1@!.)*\1[^ ]*|\w+%(\=[^ ]*)?) ?\zs',
+        \ 0)
+
   for s in ls
-    let [k, v] = [matchstr(s, '^[^=]\+\ze\(=\|$\)'), matchstr(s, '^[^=]\+=\zs.*')]
+    let [k, v] = [
+          \ matchstr(s, '^[^=]\+\ze\(=\|$\)'),
+          \ matchstr(s, '^[^=]\+=\zs.*')
+          \ ]
     if k ==# 'step'
       let op = s:trim(v)
     elseif k ==# 'contains_prefix'
@@ -35,15 +53,17 @@ function! s:resolve_parenthesis_with(init_state, p)
 endfunction
 
 function! s:resolve_parenthesis_from_config(config)
-  return s:resolve_parenthesis_with(['', 0, '', a:config.contains_prefix, '', a:config.operators], a:config.syntax_options)
+  return s:resolve_parenthesis_with([
+        \ '', 0, '', a:config.contains_prefix, '', a:config.operators
+        \ ], a:config.syntax_options)
 endfunction
 
 function! s:synID(prefix, group, lv, id)
-  return a:prefix.'_lv'.a:lv.'_'.a:group.a:id
+  return a:prefix .'_lv'. a:lv .'_'. a:group . a:id
 endfunction
 
 function! s:synGroupID(prefix, group, lv)
-  return a:prefix.a:group.'_lv'.a:lv
+  return a:prefix . a:group .'_lv'. a:lv
 endfunction
 
 function! stripedCamel#syntax#syn(config)
@@ -81,13 +101,25 @@ function! stripedCamel#syntax#syn(config)
     endfor
   endfor
   for lv in range(cycle)
-    exe 'syn cluster '.s:synGroupID(prefix, 'Regions', lv).' contains='.join(map(range(len(conf.syntax_border)), 's:synID(prefix, "r", lv, v:val)'), ',')
-    exe 'syn cluster '.s:synGroupID(prefix, 'syntax_border', lv).' contains='.join(map(range(len(conf.syntax_border)), 's:synID(prefix, "p", lv, v:val)'), ',')
-    exe 'syn cluster '.s:synGroupID(prefix, 'Operators', lv).' contains='.join(map(range(len(conf.syntax_border)), 's:synID(prefix, "o", lv, v:val)'), ',')
+    exe 'syn cluster' s:synGroupID(prefix, 'Regions', lv)
+          \ 'contains='. join(map(range(len(conf.syntax_border)),
+          \ 's:synID(prefix, "r", lv, v:val)'), ',')
+    exe 'syn cluster' s:synGroupID(prefix, 'syntax_border', lv)
+          \ 'contains='. join(map(range(len(conf.syntax_border)),
+          \ 's:synID(prefix, "p", lv, v:val)'), ',')
+    exe 'syn cluster' s:synGroupID(prefix, 'Operators', lv)
+          \ 'contains='. join(map(range(len(conf.syntax_border)),
+          \ 's:synID(prefix, "o", lv, v:val)'), ',')
   endfor
-  exe 'syn cluster '.prefix.'Regions contains='.join(map(range(cycle), '"@".s:synGroupID(prefix, "Regions", v:val)'), ',')
-  exe 'syn cluster '.prefix.'syntax_border contains='.join(map(range(cycle), '"@".s:synGroupID(prefix, "syntax_border", v:val)'), ',')
-  exe 'syn cluster '.prefix.'Operators contains='.join(map(range(cycle), '"@".s:synGroupID(prefix, "Operators", v:val)'), ',')
+  exe 'syn cluster' prefix .'Regions contains='.
+        \ join(map(range(cycle),
+        \ '"@". s:synGroupID(prefix, "Regions", v:val)'), ',')
+  exe 'syn cluster' prefix .'syntax_border contains='.
+        \ join(map(range(cycle),
+        \ '"@". s:synGroupID(prefix, "syntax_border", v:val)'), ',')
+  exe 'syn cluster' prefix .'Operators contains='.
+        \ join(map(range(cycle),
+        \ '"@". s:synGroupID(prefix, "Operators", v:val)'), ',')
   if has_key(conf, 'after') | for cmd in conf.after | exe cmd | endfor | endif
 endfunction
 
@@ -97,9 +129,12 @@ function! stripedCamel#syntax#syn_clear(config)
 
   for id in range(len(conf.syntax_border))
     for lv in range(conf.cycle)
-      let [rid, oid] = [s:synID(prefix, 'r', lv, id), s:synID(prefix, 'o', lv, id)]
-      exe 'syn clear '.rid
-      exe 'syn clear '.oid
+      let [rid, oid] = [
+            \ s:synID(prefix, 'r', lv, id),
+            \ s:synID(prefix, 'o', lv, id)
+            \ ]
+      exe 'syn clear'. rid
+      exe 'syn clear'. oid
     endfor
   endfor
 endfunction
@@ -110,14 +145,19 @@ function! stripedCamel#syntax#hi(config)
 
   for id in range(len(conf.syntax_border))
     for lv in range(conf.cycle)
-      let [pid, oid] = [s:synID(prefix, 'p', lv, id), s:synID(prefix, 'o', lv, id)]
+      let [pid, oid] = [
+            \ s:synID(prefix, 'p', lv, id),
+            \ s:synID(prefix, 'o', lv, id)
+            \ ]
       let ctermfg = conf.ctermfgs[lv % len(conf.ctermfgs)]
       let guifg = conf.guifgs[lv % len(conf.guifgs)]
       let cterm = conf.cterms[lv % len(conf.cterms)]
       let gui = conf.guis[lv % len(conf.guis)]
-      let hi_style = 'ctermfg='.ctermfg.' guifg='.guifg.(len(cterm) > 0 ? ' cterm='.cterm : '').(len(gui) > 0 ? ' gui='.gui : '')
-      exe 'hi '.pid.' '.hi_style
-      exe 'hi '.oid.' '.hi_style
+      let hi_style = 'ctermfg='. ctermfg .' guifg='. guifg.
+            \ (len(cterm) > 0 ? ' cterm='. cterm : '')
+            \ . (len(gui) > 0 ? ' gui='. gui : '')
+      exe 'hi' pid hi_style
+      exe 'hi' oid hi_style
     endfor
   endfor
 endfunction
@@ -128,9 +168,12 @@ function! stripedCamel#syntax#hi_clear(config)
 
   for id in range(len(conf.syntax_border))
     for lv in range(conf.cycle)
-      let [pid, oid] = [s:synID(prefix, 'p', lv, id), s:synID(prefix, 'o', lv, id)]
-      exe 'hi clear '.pid
-      exe 'hi clear '.oid
+      let [pid, oid] = [
+            \ s:synID(prefix, 'p', lv, id),
+            \ s:synID(prefix, 'o', lv, id)
+            \ ]
+      exe 'hi clear' pid
+      exe 'hi clear' oid
     endfor
   endfor
 endfunction
