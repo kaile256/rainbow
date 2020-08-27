@@ -5,7 +5,7 @@ function! s:trim(s)
 endfunction
 
 function! s:concat(strs)
-  return join(filter(a:strs, "v:val !~ '^[ ]*$'"), ',')
+  return join(filter(a:strs, "v:val !~# '^[ ]*$'"), ',')
 endfunction
 
 function! s:resolve_parenthesis_with(init_state, p)
@@ -15,15 +15,15 @@ function! s:resolve_parenthesis_with(init_state, p)
   let ls = split(p, '\v%(%(start|step|end)\=(.)%(\1@!.)*\1[^ ]*|\w+%(\=[^ ]*)?) ?\zs', 0)
   for s in ls
     let [k, v] = [matchstr(s, '^[^=]\+\ze\(=\|$\)'), matchstr(s, '^[^=]\+=\zs.*')]
-    if k == 'step'
+    if k ==# 'step'
       let op = s:trim(v)
-    elseif k == 'contains_prefix'
+    elseif k ==# 'contains_prefix'
       let contains_prefix = s:trim(v)
-    elseif k == 'contains'
+    elseif k ==# 'contains'
       let contains = s:concat([contains, s:trim(v)])
-    elseif k == 'containedin'
+    elseif k ==# 'containedin'
       let containedin = s:concat([containedin, s:trim(v)])
-    elseif k == 'contained'
+    elseif k ==# 'contained'
       let contained = 1
     else
       let paren .= s
