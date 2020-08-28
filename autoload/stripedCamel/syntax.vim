@@ -81,6 +81,11 @@ function! stripedCamel#syntax#update(config)
     let [humpOfCamel, contained, containedin, contains_prefix, contains, options] =
           \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
     for lv in range(cycle)
+      " Sample Format:
+      " syn match fooFunctionStripedCamel_lv1 '\u[a-z0-9]\+'
+      "         \ contained containedin=fooFunction
+      "         \ skipwhite skipempty
+
       let group = stripedCamel#unique#synID(prefix, 'o', lv, id)
       let parent = stripedCamel#unique#synID(prefix, 'r', lv, id)
       if len(options) > 2
