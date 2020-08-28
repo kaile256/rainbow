@@ -69,44 +69,31 @@ function! s:lcm(a, b)
   return (a:a / s:gcd(a:a, a:b)) * a:b
 endfunction
 
-function! s:gen_conf(ft)
-  let user_conf_global = get(g:, 'stripedCamel_conf', {})
+function! s:set_syntax_config(ft) abort
+  let config_syntax_local = has_key(g:stripedCamel#syntax_as_filetypes, a:ft)
+        \ ? deepcopy(g:stripedCamel#syntax_as_filetypes[a:ft])
+        \ : deepcopy(g:stripedCamel#syntax_as_filetypes['_'])
 
-  let default_conf_local_default = s:default_config.filetype['_']
-  let default_conf_as_ft = get(s:default_config.filetype, a:ft,
-        \ default_conf_local_default)
-
-  let user_conf_as_filetypes = get(user_conf_global, 'filetype', {})
-  let user_conf_local_default = get(user_conf_as_filetypes, '_',
-        \ default_conf_as_ft)
-  let user_conf_as_ft = get(user_conf_as_filetypes, a:ft,
-        \ user_conf_local_default)
-
-  let af_conf = s:eq(user_conf_as_ft, 'default')
-        \ ? default_conf_as_ft
-        \ : user_conf_as_ft
-
-  if s:eq(af_conf, 0)
+  if empty(config_syntax_local)
     return 0
   endif
 
-  let conf = {
-        \ 'syn_name_prefix' :
-        \     substitute(a:ft, '\v\A+(\a)', '\u\1', 'g') .'stripedCamel'
-        \ }
+  let config_syntax_local = extend(config_syntax_local,
+        \ deepcopy(g:stripedCamel#syntax_global), 'keep')
+  return config_syntax_local
+endfunction
 
-  let default_conf = extend(copy(s:default_config), user_conf_global, 'force')
-  unlet default_conf.filetype
-  let conf = extend(conf, default_conf)
+function! s:gen_conf(ft)
+  let config = {}
+  let config.syntax = s:set_syntax_config(a:ft)
+  let config.highlight = g:stripedCamel#highlight
 
-  let conf = extend(conf, af_conf)
-
-  let conf.cycle = (has('termguicolors') && &termguicolors)
+  let config.cycle = (has('termguicolors') && &termguicolors)
         \ || has('gui_running')
-        \ ? s:lcm(len(conf.guifgs), len(conf.guis))
-        \ : s:lcm(len(conf.ctermfgs), len(conf.cterms))
+        \ ? s:lcm(len(config.highlight.guifg), len(config.highlight.gui))
+        \ : s:lcm(len(config.highlight.ctermfg), len(config.highlight.cterm))
 
-  return conf
+  return config
 endfunction
 
 function! stripedCamel#config#generate(ft)
