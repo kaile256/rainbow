@@ -89,7 +89,8 @@ function! stripedCamel#syntax#update(config)
 
       if len(op) > 2
         exe 'syn match' stripedCamel#unique#synID(prefix, 'o', lv, id) op
-              \ 'containedin='. stripedCamel#unique#synID(prefix, 'r', lv, id) 'contained'
+              \ 'containedin='. stripedCamel#unique#synID(prefix, 'r', lv, id)
+              \ 'contained'
       endif
 
       let real_contains = s:concat([contains_prefix, contains])
