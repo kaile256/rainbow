@@ -130,7 +130,8 @@ function! stripedCamel#syntax#update(config)
   exe 'syn cluster' prefix .'Operators contains='.
         \ join(map(range(cycle),
         \ '"@". stripedCamel#unique#synGroupID(prefix, "Operators", v:val)'), ',')
-  if has_key(conf, 'after') | return | endif
+
+  if empty(get(conf, 'after', [])) | return | endif
 
   for cmd in conf.after
     " Note: 'after' is to solve 3rd-party-plugin-compatibility problems with
