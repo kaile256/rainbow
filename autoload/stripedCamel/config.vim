@@ -1,6 +1,6 @@
 " Copyright 2013 LuoChen (luochen1990@gmail.com). Licensed under the Apache License 2.0.
 
-let s:stripedCamel_conf = {
+let s:default_config = {
       \ 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
       \ 'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
       \ 'cterms': {},
@@ -96,11 +96,11 @@ endfunction
 function! s:gen_conf(ft)
   let g = get(g:, 'stripedCamel_conf', {})
   let s = get(g, 'filetype', {})
-  let dft_conf = extend(copy(s:stripedCamel_conf), g)
+  let dft_conf = extend(copy(s:default_config), g)
   unlet dft_conf.filetype
 
-  let dx_conf = s:stripedCamel_conf.filetype['_']
-  let ds_conf = get(s:stripedCamel_conf.filetype, a:ft, dx_conf)
+  let dx_conf = s:default_config.filetype['_']
+  let ds_conf = get(s:default_config.filetype, a:ft, dx_conf)
   let ux_conf = get(s, '_', ds_conf)
   let us_conf = get(s, a:ft, ux_conf)
   let af_conf = s:eq(us_conf, 'default') ? ds_conf : us_conf
