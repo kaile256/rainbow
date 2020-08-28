@@ -127,6 +127,9 @@ function! stripedCamel#syntax#update(config)
   if has_key(conf, 'after') | return | endif
 
   for cmd in conf.after
+    " Note: 'after' is to solve 3rd-party-plugin-compatibility problems with
+    " `:syn clear xxx`.  Read the README of luochen1990/rainbow for detail at
+    " https://bit.ly/2D9OsYI.
     exe cmd
   endfor
 endfunction
