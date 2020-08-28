@@ -7,10 +7,10 @@ function! stripedCamel#highlight#update(config)
     for lv in range(conf.cycle)
       let group = stripedCamel#unique#synID(prefix, 'o', lv, id)
 
-      let ctermfg = conf.ctermfgs[lv % len(conf.ctermfgs)]
-      let guifg = conf.guifgs[lv % len(conf.guifgs)]
-      let cterm = conf.cterms[lv % len(conf.cterms)]
-      let gui = conf.guis[lv % len(conf.guis)]
+      let ctermfg = conf.ctermfg[lv % len(conf.ctermfg)]
+      let guifg = conf.guifg[lv % len(conf.guifg)]
+      let cterm = conf.cterm[lv % len(conf.cterm)]
+      let gui = conf.gui[lv % len(conf.gui)]
 
       let hi_style =
             \ 'ctermfg='. ctermfg
