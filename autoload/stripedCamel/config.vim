@@ -18,6 +18,39 @@ let s:default_config = {
       \ }
       \}
 
+function! s:get_config(name, default) abort
+  " Sample:
+  " let g:stripedCamel#syntax_global =
+  "       \ extend(get(g:, 'stripedCamel#syntax_global', {
+  "       \ 'regexp': ['\u[a-z0-9]'],
+  "       \ 'option': ['contained', 'skipwhite', 'skipempty'],
+  "       \ }, 'keep')
+
+  let plugin = 'stripedCamel'
+  let var = plugin .'#'. a:name
+  let {'g:'. var} = extend(get(g:, var, {}), a:default, 'keep')
+endfunction
+
+call s:get_config('highlight', {
+      \ 'guifg': -1,
+      \ 'ctermfg': -1,
+      \ 'gui': -1,
+      \ 'cterm': -1,
+      \ })
+
+call s:get_config('syntax_global', {
+      \ 'regexp': ['\u[a-z0-9]'],
+      \ 'option': ['contained', 'skipwhite', 'skipempty'],
+      \ })
+
+call s:get_config('syntax_as_filetypes', {
+      \ '_': {},
+      \ 'vim': {
+      \   'regexp': ['#\w\+'],
+      \   'option': ['contained', 'skipwhite', 'skipempty'],
+      \ }
+      \ })
+
 function! s:eq(x, y)
   return type(a:x) == type(a:y) && a:x == a:y
 endfunction
