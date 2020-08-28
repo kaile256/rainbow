@@ -120,7 +120,30 @@ function! s:set_syntax_config(ft) abort
   return config_syntax_local
 endfunction
 
-function! s:set_groups() abort
+function! s:resolve_group_into_colors(group) abort
+  let grp = a:group
+
+  try
+    while 1
+      let exe_hi = execute('hi '. grp)
+      let color_conf = matchstr(exe_hi, '\C xxx\s\+\zs.*$')
+      if color_conf ==# 'cleared'
+        return 0
+      endif
+
+      let linked = matchstr(color_conf, 'links to \zs.*$')
+      if empty(linked)
+        return color_conf
+      endif
+
+      let grp = linked
+    endwhile
+  catch /E411/
+    return 0
+  endtry
+endfunction
+
+function! s:get_groups2colors() abort
   let Groups = []
 
   let prefixes = has_key(g:stripedCamel#groups_extend_prefixes, &ft)
@@ -135,13 +158,20 @@ function! s:set_groups() abort
     let Groups = extend(Groups, groups_local)
   endfor
 
-  return Groups
+  let group2colors = {}
+  for grp in Groups
+    let color_conf = s:resolve_group_into_colors(grp)
+    if empty(color_conf) | continue | endif
+    let group2colors = extend(group2colors, {grp : color_conf})
+  endfor
+
+  return group2colors
 endfunction
 
 function! s:gen_conf(ft)
   let config = {}
 
-  let config.groups = s:set_groups()
+  let config.groups = s:get_groups2colors()
   let config.syntax = s:set_syntax_config(a:ft)
   let config.highlight = g:stripedCamel#highlight
 
