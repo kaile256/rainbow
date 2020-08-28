@@ -52,7 +52,10 @@ function! s:gen_conf(ft)
     return 0
   endif
 
-  let conf = extend(extend({'syn_name_prefix': substitute(a:ft, '\v\A+(\a)', '\u\1', 'g') .'stripedCamel'}, dft_conf), af_conf)
+  let conf = extend(extend({
+        \   'syn_name_prefix' :
+        \     substitute(a:ft, '\v\A+(\a)', '\u\1', 'g') .'stripedCamel'
+        \ }, dft_conf), af_conf)
   let conf.cycle = (has('termguicolors') && &termguicolors)
         \ || has('gui_running')
         \ ? s:lcm(len(conf.guifgs), len(conf.guis))
