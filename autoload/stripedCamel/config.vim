@@ -3,8 +3,8 @@
 let s:default_config = {
       \ 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
       \ 'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
-      \ 'cterms': {},
-      \ 'guis': {},
+      \ 'cterms': [''],
+      \ 'guis': [''],
       \ 'operators': '_,_',
       \ 'contains_prefix': 'TOP',
       \ 'syntax_border': ['\u[a-z0-9_]'],
