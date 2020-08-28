@@ -75,20 +75,21 @@ function! stripedCamel#syntax#syn(config)
 
   let glob_paran_opts = s:resolve_parenthesis_from_config(conf)
   let b:stripedCamel_loaded = cycle
+
   for id in range(len(conf.syntax_border))
     let [paren, contained, containedin, contains_prefix, contains, op] =
           \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
     for lv in range(cycle)
       let lv2 = ((lv + cycle - 1) % cycle)
       let [rid, pid, gid2] = [
-            \ s:synID(prefix, 'r', lv, id),
-            \ s:synID(prefix, 'p', lv, id),
-            \ s:synGroupID(prefix, 'Regions', lv2)
+            \ stripedCamel#unique#synID(prefix, 'r', lv, id),
+            \ stripedCamel#unique#synID(prefix, 'p', lv, id),
+            \ stripedCamel#unique#synGroupID(prefix, 'Regions', lv2)
             \ ]
 
       if len(op) > 2
-        exe 'syn match' s:synID(prefix, 'o', lv, id) op
-              \ 'containedin='. s:synID(prefix, 'r', lv, id) 'contained'
+        exe 'syn match' stripedCamel#unique#synID(prefix, 'o', lv, id) op
+              \ 'containedin='. stripedCamel#unique#synID(prefix, 'r', lv, id) 'contained'
       endif
 
       let real_contains = s:concat([contains_prefix, contains])
@@ -105,26 +106,27 @@ function! stripedCamel#syntax#syn(config)
             \ paren
     endfor
   endfor
+
   for lv in range(cycle)
-    exe 'syn cluster' s:synGroupID(prefix, 'Regions', lv)
+    exe 'syn cluster' stripedCamel#unique#synGroupID(prefix, 'Regions', lv)
           \ 'contains='. join(map(range(len(conf.syntax_border)),
-          \ 's:synID(prefix, "r", lv, v:val)'), ',')
-    exe 'syn cluster' s:synGroupID(prefix, 'syntax_border', lv)
+          \ 'stripedCamel#uniqu#synID(prefix, "r", lv, v:val)'), ',')
+    exe 'syn cluster' stripedCamel#unique#synGroupID(prefix, 'syntax_border', lv)
           \ 'contains='. join(map(range(len(conf.syntax_border)),
-          \ 's:synID(prefix, "p", lv, v:val)'), ',')
-    exe 'syn cluster' s:synGroupID(prefix, 'Operators', lv)
+          \ 'stripedCamel#uniqu#synID(prefix, "p", lv, v:val)'), ',')
+    exe 'syn cluster' stripedCamel#unique#synGroupID(prefix, 'Operators', lv)
           \ 'contains='. join(map(range(len(conf.syntax_border)),
-          \ 's:synID(prefix, "o", lv, v:val)'), ',')
+          \ 'stripedCamel#uniqu#synID(prefix, "o", lv, v:val)'), ',')
   endfor
   exe 'syn cluster' prefix .'Regions contains='.
         \ join(map(range(cycle),
-        \ '"@". s:synGroupID(prefix, "Regions", v:val)'), ',')
+        \ '"@". stripedCamel#uniqu#synGroupID(prefix, "Regions", v:val)'), ',')
   exe 'syn cluster' prefix .'syntax_border contains='.
         \ join(map(range(cycle),
-        \ '"@". s:synGroupID(prefix, "syntax_border", v:val)'), ',')
+        \ '"@". stripedCamel#uniqu#synGroupID(prefix, "syntax_border", v:val)'), ',')
   exe 'syn cluster' prefix .'Operators contains='.
         \ join(map(range(cycle),
-        \ '"@". s:synGroupID(prefix, "Operators", v:val)'), ',')
+        \ '"@". stripedCamel#uniqu#synGroupID(prefix, "Operators", v:val)'), ',')
   if has_key(conf, 'after') | return | endif
 
   for cmd in conf.after
@@ -139,8 +141,8 @@ function! stripedCamel#syntax#syn_clear(config)
   for id in range(len(conf.syntax_border))
     for lv in range(conf.cycle)
       let [rid, oid] = [
-            \ s:synID(prefix, 'r', lv, id),
-            \ s:synID(prefix, 'o', lv, id)
+            \ stripedCamel#unique#synID(prefix, 'r', lv, id),
+            \ stripedCamel#unique#synID(prefix, 'o', lv, id)
             \ ]
       exe 'syn clear'. rid
       exe 'syn clear'. oid
@@ -155,8 +157,8 @@ function! stripedCamel#syntax#hi(config)
   for id in range(len(conf.syntax_border))
     for lv in range(conf.cycle)
       let [pid, oid] = [
-            \ s:synID(prefix, 'p', lv, id),
-            \ s:synID(prefix, 'o', lv, id)
+            \ stripedCamel#util#set_synID(prefix, 'p', lv, id),
+            \ stripedCamel#util#set_synID(prefix, 'o', lv, id)
             \ ]
       let ctermfg = conf.ctermfgs[lv % len(conf.ctermfgs)]
       let guifg = conf.guifgs[lv % len(conf.guifgs)]
@@ -178,8 +180,8 @@ function! stripedCamel#syntax#hi_clear(config)
   for id in range(len(conf.syntax_border))
     for lv in range(conf.cycle)
       let [pid, oid] = [
-            \ s:synID(prefix, 'p', lv, id),
-            \ s:synID(prefix, 'o', lv, id)
+            \ stripedCamel#util#set_synID(prefix, 'p', lv, id),
+            \ stripedCamel#util#set_synID(prefix, 'o', lv, id)
             \ ]
       exe 'hi clear' pid
       exe 'hi clear' oid
