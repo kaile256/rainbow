@@ -52,8 +52,15 @@ function! s:resolve_parenthesis_with(init_state, pattern)
       let humpOfCamel .= s
     endif
   endfor
-  let ret = [humpOfCamel, contained, containedin, contains_prefix, contains, options]
-  "echom json_encode(rst)
+
+  let ret = [
+        \ humpOfCamel,
+        \ contained,
+        \ containedin,
+        \ contains_prefix,
+        \ contains,
+        \ options
+        \ ]
   return ret
 endfunction
 
