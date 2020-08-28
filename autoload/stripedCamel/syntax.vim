@@ -34,10 +34,10 @@ function! s:resolve_parenthesis_with(init_state, pattern)
         \ 0)
 
   for s in ls
-    let [k, v] = [
-          \ matchstr(s, '^[^=]\+\ze\(=\|$\)'),
-          \ matchstr(s, '^[^=]\+=\zs.*')
-          \ ]
+    let key_value = split(s, '=')
+    let k = key_value[0]
+    let v = len(key_value) < 2 ? '' : join(key_value[1:], '')
+
     if k ==# 'step'
       let options = s:trim_spaces_around(v)
     elseif k ==# 'contains_prefix'
