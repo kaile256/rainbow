@@ -93,6 +93,7 @@ function! stripedCamel#syntax#update(config)
               \ options
               \ 'containedin='. rid
               \ 'contained'
+              \ string(humpOfCamel)
       endif
     endfor
   endfor
