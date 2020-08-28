@@ -52,6 +52,30 @@ call s:get_config('syntax_as_filetypes', {
       \ }
       \ })
 
+call s:get_config('groups_global', [
+      \ 'Function',
+      \ 'Var',
+      \ 'Command',
+      \ 'IsCommand',
+      \ 'FuncVar',
+      \ 'Func',
+      \ 'Type',
+      \ ])
+
+call s:get_config('groups_as_filetypes', {
+      \ 'vim': [
+      \   'vimUserCmd',
+      \   'vimUserCommand',
+      \   'vimUserFunc',
+      \ ],
+      \ 'typescript': [
+      \   'tsxObjectLabel',
+      \   'tsxObjectLiteral',
+      \   'tsxTagName',
+      \   'typescriptVariableDeclaration',
+      \ ],
+      \ })
+
 function! s:gcd(a, b)
   let [a, b, t] = [a:a, a:b, 0]
   while b != 0
