@@ -9,13 +9,18 @@ function! stripedCamel#highlight#update(config)
             \ stripedCamel#unique#synID(prefix, 'p', lv, id),
             \ stripedCamel#unique#synID(prefix, 'o', lv, id)
             \ ]
+
       let ctermfg = conf.ctermfgs[lv % len(conf.ctermfgs)]
       let guifg = conf.guifgs[lv % len(conf.guifgs)]
       let cterm = conf.cterms[lv % len(conf.cterms)]
       let gui = conf.guis[lv % len(conf.guis)]
-      let hi_style = 'ctermfg='. ctermfg .' guifg='. guifg.
-            \ (len(cterm) > 0 ? ' cterm='. cterm : '')
+
+      let hi_style =
+            \ 'ctermfg='. ctermfg
+            \ .' guifg='. guifg
+            \ . (len(cterm) > 0 ? ' cterm='. cterm : '')
             \ . (len(gui) > 0 ? ' gui='. gui : '')
+
       exe 'hi' pid hi_style
       exe 'hi' oid hi_style
     endfor
