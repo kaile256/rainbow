@@ -1,5 +1,9 @@
 " Copyright 2013 LuoChen (luochen1990@gmail.com). Licensed under the Apache License 2.0.
 
+" gid: Group
+" pid: P
+" rid: Regions
+
 function! s:trim_spaces_around(s)
   return matchstr(a:s, '^\s*\zs.\{-}\ze\s*$')
 endfunction
@@ -10,7 +14,7 @@ endfunction
 
 function! s:resolve_parenthesis_with(init_state, pattern)
   let [
-        \ paren,
+        \ humpOfCamel,
         \ contained,
         \ containedin,
         \ contains_prefix,
@@ -45,10 +49,10 @@ function! s:resolve_parenthesis_with(init_state, pattern)
     elseif k ==# 'contained'
       let contained = 1
     else
-      let paren .= s
+      let humpOfCamel .= s
     endif
   endfor
-  let ret = [paren, contained, containedin, contains_prefix, contains, options]
+  let ret = [humpOfCamel, contained, containedin, contains_prefix, contains, options]
   "echom json_encode(rst)
   return ret
 endfunction
@@ -68,7 +72,7 @@ function! stripedCamel#syntax#update(config)
   let b:stripedCamel_loaded = cycle
 
   for id in range(len(conf.syntax_border))
-    let [paren, contained, containedin, contains_prefix, contains, options] =
+    let [humpOfCamel, contained, containedin, contains_prefix, contains, options] =
           \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
     for lv in range(cycle)
       let lv2 = ((lv + cycle - 1) % cycle)
@@ -96,7 +100,7 @@ function! stripedCamel#syntax#update(config)
             \ 'contains='. real_contains
             \ real_contained
             \ 'containedin='. real_containedin
-            \ paren
+            \ humpOfCamel
     endfor
   endfor
 
