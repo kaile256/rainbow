@@ -68,7 +68,7 @@ function! s:synGroupID(prefix, group, lv)
   return a:prefix . a:group .'_lv'. a:lv
 endfunction
 
-function! stripedCamel#syntax#syn(config)
+function! stripedCamel#syntax#update(config)
   let conf = a:config
   let prefix = conf.syn_name_prefix
   let cycle = conf.cycle
@@ -134,7 +134,7 @@ function! stripedCamel#syntax#syn(config)
   endfor
 endfunction
 
-function! stripedCamel#syntax#syn_clear(config)
+function! stripedCamel#syntax#clear(config)
   let conf = a:config
   let prefix = conf.syn_name_prefix
 
