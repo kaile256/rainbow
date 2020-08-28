@@ -121,7 +121,8 @@ function! s:gen_conf(ft)
 endfunction
 
 function! stripedCamel#config#generate(ft)
-  return filter(map(split(a:ft, '\.'), 's:gen_conf(v:val)'),
-        \ 'type(v:val) == type({})')
+  let fts = split(a:ft, '\.')
+  let configs = map(fts, 's:gen_conf(v:val)')
+  return filter(configs, 'type(v:val) == type({})')
 endfunction
 
