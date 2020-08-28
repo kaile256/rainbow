@@ -41,8 +41,8 @@ endfunction
 call s:get_config('highlight', {
       \ 'guifg': -1,
       \ 'ctermfg': -1,
-      \ 'gui': -1,
-      \ 'cterm': -1,
+      \ 'gui': [],
+      \ 'cterm': [],
       \ })
 
 call s:get_config('syntax_global', {
