@@ -15,14 +15,14 @@ function! s:resolve_parenthesis_with(init_state, pattern)
         \ containedin,
         \ contains_prefix,
         \ contains,
-        \ op
+        \ options
         \ ] = a:init_state
 
   " preprocess the old style syntax_border config
   let pattern = type(a:pattern) != type([])
         \ ? a:pattern
         \ : len(a:pattern) == 3
-        \   ? printf('start=#%s# step=%s end=#%s#', a:pattern[0], op, a:pattern[-1])
+        \   ? printf('start=#%s# step=%s end=#%s#', a:pattern[0], options, a:pattern[-1])
         \   : printf('start=#%s# end=#%s#', a:pattern[0], a:pattern[-1])
 
   let ls = split(pattern,
@@ -35,7 +35,7 @@ function! s:resolve_parenthesis_with(init_state, pattern)
           \ matchstr(s, '^[^=]\+=\zs.*')
           \ ]
     if k ==# 'step'
-      let op = s:trim_spaces_around(v)
+      let options = s:trim_spaces_around(v)
     elseif k ==# 'contains_prefix'
       let contains_prefix = s:trim_spaces_around(v)
     elseif k ==# 'contains'
@@ -48,7 +48,7 @@ function! s:resolve_parenthesis_with(init_state, pattern)
       let paren .= s
     endif
   endfor
-  let ret = [paren, contained, containedin, contains_prefix, contains, op]
+  let ret = [paren, contained, containedin, contains_prefix, contains, options]
   "echom json_encode(rst)
   return ret
 endfunction
@@ -68,7 +68,7 @@ function! stripedCamel#syntax#update(config)
   let b:stripedCamel_loaded = cycle
 
   for id in range(len(conf.syntax_border))
-    let [paren, contained, containedin, contains_prefix, contains, op] =
+    let [paren, contained, containedin, contains_prefix, contains, options] =
           \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
     for lv in range(cycle)
       let lv2 = ((lv + cycle - 1) % cycle)
@@ -78,9 +78,10 @@ function! stripedCamel#syntax#update(config)
             \ stripedCamel#unique#synGroupID(prefix, 'Regions', lv2)
             \ ]
 
-      if len(op) > 2
-        exe 'syn match' stripedCamel#unique#synID(prefix, 'o', lv, id) op
-              \ 'containedin='. stripedCamel#unique#synID(prefix, 'r', lv, id)
+      if len(options) > 2
+        exe 'syn match' stripedCamel#unique#synID(prefix, 'o', lv, id)
+              \ options
+              \ 'containedin='. rid
               \ 'contained'
       endif
 
