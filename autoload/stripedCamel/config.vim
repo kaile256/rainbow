@@ -136,6 +136,9 @@ endfunction
 function! stripedCamel#config#generate(ft)
   let fts = split(a:ft, '\.')
   let configs = map(fts, 's:gen_conf(v:val)')
-  return filter(configs, 'type(v:val) == type({})')
+
+  " Return an empty list as s:gen_conf() returns 0.
+  let list_of_dicts = filter(configs, 'type(v:val) == type({})')
+  return list_of_dicts
 endfunction
 
