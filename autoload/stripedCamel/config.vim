@@ -51,10 +51,6 @@ call s:get_config('syntax_as_filetypes', {
       \ }
       \ })
 
-function! s:eq(x, y)
-  return type(a:x) == type(a:y) && a:x == a:y
-endfunction
-
 function! s:gcd(a, b)
   let [a, b, t] = [a:a, a:b, 0]
   while b != 0
