@@ -69,6 +69,13 @@ call s:get_config('groups_global', [
       \ 'Type',
       \ ])
 
+call s:get_config('groups_extend_prefixes', {
+      \ 'javascriptreact': ['jsx', 'javascript'],
+      \ 'typescriptreact': ['tsx', 'typescript'],
+      \ 'markdown': ['mkd', 'markdown'],
+      \ 'jsonc': ['json'],
+      \ })
+
 call s:get_config('groups_as_filetypes', {
       \ 'vim': [
       \   'vimUserCmd',
@@ -76,10 +83,12 @@ call s:get_config('groups_as_filetypes', {
       \   'vimUserFunc',
       \ ],
       \ 'typescript': [
+      \   'typescriptVariableDeclaration',
+      \ ],
+      \ 'typescriptreact': [
       \   'tsxObjectLabel',
       \   'tsxObjectLiteral',
       \   'tsxTagName',
-      \   'typescriptVariableDeclaration',
       \ ],
       \ })
 
