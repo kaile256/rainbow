@@ -15,8 +15,8 @@ function! s:resolve_parenthesis_with(init_state, pattern)
         \ containedin,
         \ contains_prefix,
         \ contains,
-        \ op] =
-        \ a:init_state
+        \ op
+        \ ] = a:init_state
 
   " preprocess the old style syntax_border config
   let pattern = type(a:pattern) != type([])
