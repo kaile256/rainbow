@@ -49,9 +49,9 @@ function! s:resolve_parenthesis_with(init_state, p)
       let paren .= s
     endif
   endfor
-  let rst = [paren, contained, containedin, contains_prefix, contains, op]
+  let ret = [paren, contained, containedin, contains_prefix, contains, op]
   "echom json_encode(rst)
-  return rst
+  return ret
 endfunction
 
 function! s:resolve_parenthesis_from_config(config)
