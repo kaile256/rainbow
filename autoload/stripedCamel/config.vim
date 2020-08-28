@@ -121,6 +121,11 @@ function! s:set_syntax_config(ft) abort
 endfunction
 
 function! s:resolve_group_into_colors(group) abort
+  " Given: a:group is vimFunc
+  " Return: (String)
+  " cterm=bold ctermfg=210 ctermbg=235 gui=bold guifg=#fd8409 guibg=#3a4b5c
+  " on some colorscheme
+
   let grp = a:group
 
   try
