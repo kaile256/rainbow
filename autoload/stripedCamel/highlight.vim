@@ -6,8 +6,8 @@ function! stripedCamel#highlight#update(config)
   for id in range(len(conf.syntax_border))
     for lv in range(conf.cycle)
       let [pid, oid] = [
-            \ stripedCamel#util#set_synID(prefix, 'p', lv, id),
-            \ stripedCamel#util#set_synID(prefix, 'o', lv, id)
+            \ stripedCamel#unique#synID(prefix, 'p', lv, id),
+            \ stripedCamel#unique#synID(prefix, 'o', lv, id)
             \ ]
       let ctermfg = conf.ctermfgs[lv % len(conf.ctermfgs)]
       let guifg = conf.guifgs[lv % len(conf.guifgs)]
@@ -29,8 +29,8 @@ function! stripedCamel#highlight#clear(config)
   for id in range(len(conf.syntax_border))
     for lv in range(conf.cycle)
       let [pid, oid] = [
-            \ stripedCamel#util#set_synID(prefix, 'p', lv, id),
-            \ stripedCamel#util#set_synID(prefix, 'o', lv, id)
+            \ stripedCamel#unique#synID(prefix, 'p', lv, id),
+            \ stripedCamel#unique#synID(prefix, 'o', lv, id)
             \ ]
       exe 'hi clear' pid
       exe 'hi clear' oid
