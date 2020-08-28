@@ -18,11 +18,13 @@ function! s:resolve_parenthesis_with(init_state, p)
         \ op] =
         \ a:init_state
 
-  let p = type(a:p) == type([])
-        \ ? (len(a:p) == 3
+  " preprocess the old style syntax_border config
+  let p = type(a:p) != type([])
+        \ ? a:p
+        \ : len(a:p) == 3
         \   ? printf('start=#%s# step=%s end=#%s#', a:p[0], op, a:p[-1])
-        \   : printf('start=#%s# end=#%s#', a:p[0], a:p[-1]))
-        \ : a:p "NOTE: preprocess the old style syntax_border config
+        \   : printf('start=#%s# end=#%s#', a:p[0], a:p[-1])
+
 
   let ls = split(p,
         \ '\v%(%(start|step|end)\=(.)%(\1@!.)*\1[^ ]*|\w+%(\=[^ ]*)?) ?\zs',
