@@ -120,8 +120,28 @@ function! s:set_syntax_config(ft) abort
   return config_syntax_local
 endfunction
 
+function! s:set_groups() abort
+  let Groups = []
+
+  let prefixes = has_key(g:stripedCamel#groups_extend_prefixes, &ft)
+        \ ? g:stripedCamel#groups_extend_prefixes[&ft]
+        \ : [&ft]
+
+  for prefix in prefixes
+    let groups_global = map(deepcopy(g:stripedCamel#groups_global),
+          \ 'prefix . v:val')
+    let groups_local = get(g:stripedCamel#groups_as_filetypes, prefix, [])
+    let Groups = extend(Groups, groups_global)
+    let Groups = extend(Groups, groups_local)
+  endfor
+
+  return Groups
+endfunction
+
 function! s:gen_conf(ft)
   let config = {}
+
+  let config.groups = s:set_groups()
   let config.syntax = s:set_syntax_config(a:ft)
   let config.highlight = g:stripedCamel#highlight
 
