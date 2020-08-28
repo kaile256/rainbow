@@ -69,7 +69,6 @@ function! stripedCamel#syntax#update(config)
   let cycle = conf.cycle
 
   let glob_paran_opts = s:resolve_parenthesis_from_config(conf)
-  let b:stripedCamel_loaded = cycle
 
   for id in range(len(conf.syntax_border))
     let [humpOfCamel, contained, containedin, contains_prefix, contains, options] =
