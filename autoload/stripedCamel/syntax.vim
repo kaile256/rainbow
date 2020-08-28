@@ -5,7 +5,7 @@ function! s:trim(s)
 endfunction
 
 function! s:concat(strs)
-  return join(filter(a:strs, "v:val !~# '^[ ]*$'"), ',')
+  return join(filter(a:strs, 'v:val !~# "^[ ]*$"'), ',')
 endfunction
 
 function! s:resolve_parenthesis_with(init_state, p)
