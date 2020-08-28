@@ -28,7 +28,14 @@ function! s:get_config(name, default) abort
 
   let plugin = 'stripedCamel'
   let var = plugin .'#'. a:name
-  let {'g:'. var} = extend(get(g:, var, {}), a:default, 'keep')
+
+  let empty =
+        \   type(a:default) == type({}) ? {}
+        \ : type(a:default) == type([]) ? []
+        \ : type(a:default) == type('') ? ''
+        \ : 0
+
+  let {'g:'. var} = extend(get(g:, var, empty), a:default, 'keep')
 endfunction
 
 call s:get_config('highlight', {
