@@ -5,7 +5,7 @@ command! StripedCamelToggle  call stripedCamel#toggle()
 command! StripedCamelEnable  call stripedCamel#load()
 command! StripedCamelDisable call stripedCamel#clear()
 
-if get('g:stripedCamel_inactive', 0) | finish | endif
+if get(g:, 'stripedCamel_inactive', 0) | finish | endif
 
 augroup stripedCamel
   au ColorScheme,Syntax * call stripedCamel#load()
