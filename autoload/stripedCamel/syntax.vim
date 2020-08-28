@@ -77,7 +77,7 @@ function! stripedCamel#syntax#update(config)
 
   let glob_paran_opts = s:resolve_parenthesis_from_config(conf)
 
-  for id in range(len(conf.syntax_border))
+  for id in range(len(conf.syntax_regexp))
     let [humpOfCamel, contained, containedin, contains_prefix, contains, options] =
           \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
     for lv in range(cycle)
@@ -112,7 +112,7 @@ function! stripedCamel#syntax#clear(config)
   let conf = a:config
   let prefix = conf.syntax.prefix
 
-  for id in range(len(conf.syntax_border))
+  for id in range(len(conf.syntax_regexp))
     for lv in range(conf.cycle)
       let [rid, oid] = [
             \ stripedCamel#unique#synID(prefix, 'r', lv, id),
