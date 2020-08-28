@@ -114,12 +114,8 @@ function! stripedCamel#syntax#clear(config)
 
   for id in range(len(conf.syntax_regexp))
     for lv in range(conf.cycle)
-      let [rid, oid] = [
-            \ stripedCamel#unique#synID(prefix, 'r', lv, id),
-            \ stripedCamel#unique#synID(prefix, 'o', lv, id)
-            \ ]
-      exe 'syn clear'. rid
-      exe 'syn clear'. oid
+      let group = stripedCamel#unique#synID(prefix, 'o', lv, id)
+      exe 'syn clear'. group
     endfor
   endfor
 endfunction
