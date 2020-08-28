@@ -8,7 +8,7 @@ function! s:concat(strs)
   return join(filter(a:strs, 'v:val !~# "^[ ]*$"'), ',')
 endfunction
 
-function! s:resolve_parenthesis_with(init_state, p)
+function! s:resolve_parenthesis_with(init_state, pattern)
   let [
         \ paren,
         \ contained,
@@ -19,14 +19,13 @@ function! s:resolve_parenthesis_with(init_state, p)
         \ a:init_state
 
   " preprocess the old style syntax_border config
-  let p = type(a:p) != type([])
-        \ ? a:p
-        \ : len(a:p) == 3
-        \   ? printf('start=#%s# step=%s end=#%s#', a:p[0], op, a:p[-1])
-        \   : printf('start=#%s# end=#%s#', a:p[0], a:p[-1])
+  let pattern = type(a:pattern) != type([])
+        \ ? a:pattern
+        \ : len(a:pattern) == 3
+        \   ? printf('start=#%s# step=%s end=#%s#', a:pattern[0], op, a:pattern[-1])
+        \   : printf('start=#%s# end=#%s#', a:pattern[0], a:pattern[-1])
 
-
-  let ls = split(p,
+  let ls = split(pattern,
         \ '\v%(%(start|step|end)\=(.)%(\1@!.)*\1[^ ]*|\w+%(\=[^ ]*)?) ?\zs',
         \ 0)
 
