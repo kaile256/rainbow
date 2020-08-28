@@ -133,7 +133,7 @@ function! s:resolve_group_into_colors(group) abort
       let exe_hi = execute('hi '. grp)
       let color_conf = matchstr(exe_hi, '\C xxx\s\+\zs.*$')
       if color_conf ==# 'cleared'
-        return 0
+        return ''
       endif
 
       let linked = matchstr(color_conf, 'links to \zs.*$')
@@ -144,7 +144,7 @@ function! s:resolve_group_into_colors(group) abort
       let grp = linked
     endwhile
   catch /E411/
-    return 0
+    return ''
   endtry
 endfunction
 
