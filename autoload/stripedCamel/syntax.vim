@@ -91,14 +91,17 @@ function! stripedCamel#syntax#syn(config)
               \ 'containedin='. s:synID(prefix, 'r', lv, id) 'contained'
       endif
 
-      let real_contained = lv == 0 ? (contained ? 'contained' : '') : 'contained'
-      let real_containedin = lv == 0 ? s:concat([containedin, '@'. gid2]) : '@'. gid2
       let real_contains = s:concat([contains_prefix, contains])
+      let real_contained = lv != 0 || contained ? 'contained' : ''
+      let real_containedin = lv == 0
+            \ ? s:concat([containedin, '@'. gid2])
+            \ : '@'. gid2
+
       exe 'syn region' rid
             \ 'matchgroup='. pid
+            \ 'contains='. real_contains
             \ real_contained
             \ 'containedin='. real_containedin
-            \ 'contains='. real_contains
             \ paren
     endfor
   endfor
