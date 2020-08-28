@@ -5,7 +5,7 @@
 " rid: Regions
 
 function! s:trim_spaces_around(s)
-  return matchstr(a:s, '^\s*\zs.\{-}\ze\s*$')
+  return matchstr(a:s, '^\s*\zs.*\ze\s*$')
 endfunction
 
 function! s:concat(strs)
