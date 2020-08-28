@@ -94,16 +94,23 @@ function! s:lcm(a, b)
 endfunction
 
 function! s:gen_conf(ft)
-  let g = get(g:, 'stripedCamel_conf', {})
-  let s = get(g, 'filetype', {})
-  let dft_conf = extend(copy(s:default_config), g)
-  unlet dft_conf.filetype
+  let user_conf_global = get(g:, 'stripedCamel_conf', {})
 
-  let dx_conf = s:default_config.filetype['_']
-  let ds_conf = get(s:default_config.filetype, a:ft, dx_conf)
-  let ux_conf = get(s, '_', ds_conf)
-  let us_conf = get(s, a:ft, ux_conf)
-  let af_conf = s:eq(us_conf, 'default') ? ds_conf : us_conf
+  let default_conf = extend(copy(s:default_config), user_conf_global, 'force')
+  unlet default_conf.filetype
+  let default_conf_local_default = s:default_config.filetype['_']
+  let default_conf_as_filetype = get(s:default_config.filetype, a:ft,
+        \ default_conf_local_default)
+
+  let user_conf_as_filetypes = get(user_conf_global, 'filetype', {})
+  let user_conf_local_default = get(user_conf_as_filetypes, '_',
+        \ default_conf_as_filetype)
+  let user_conf_as_filetype = get(user_conf_as_filetypes, a:ft,
+        \ user_conf_local_default)
+
+  let af_conf = s:eq(user_conf_as_filetype, 'default')
+        \ ? default_conf_as_filetype
+        \ : user_conf_as_filetype
 
   if s:eq(af_conf, 0)
     return 0
@@ -112,7 +119,7 @@ function! s:gen_conf(ft)
   let conf = extend(extend({
         \   'syn_name_prefix' :
         \     substitute(a:ft, '\v\A+(\a)', '\u\1', 'g') .'stripedCamel'
-        \ }, dft_conf), af_conf)
+        \ }, default_conf), af_conf)
   let conf.cycle = (has('termguicolors') && &termguicolors)
         \ || has('gui_running')
         \ ? s:lcm(len(conf.guifgs), len(conf.guis))
