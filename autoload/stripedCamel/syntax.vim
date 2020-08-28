@@ -82,11 +82,11 @@ function! stripedCamel#syntax#update(config)
           \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
     for lv in range(cycle)
       let group = stripedCamel#unique#synID(prefix, 'o', lv, id)
-      let rid = stripedCamel#unique#synID(prefix, 'r', lv, id)
+      let parent = stripedCamel#unique#synID(prefix, 'r', lv, id)
       if len(options) > 2
         exe 'syn match' group
               \ options
-              \ 'containedin='. rid
+              \ 'containedin='. parent
               \ 'contained'
               \ string(humpOfCamel)
       endif
