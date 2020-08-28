@@ -113,23 +113,23 @@ function! stripedCamel#syntax#update(config)
   for lv in range(cycle)
     exe 'syn cluster' stripedCamel#unique#synGroupID(prefix, 'Regions', lv)
           \ 'contains='. join(map(range(len(conf.syntax_border)),
-          \ 'stripedCamel#uniqu#synID(prefix, "r", lv, v:val)'), ',')
+          \ 'stripedCamel#unique#synID(prefix, "r", lv, v:val)'), ',')
     exe 'syn cluster' stripedCamel#unique#synGroupID(prefix, 'syntax_border', lv)
           \ 'contains='. join(map(range(len(conf.syntax_border)),
-          \ 'stripedCamel#uniqu#synID(prefix, "p", lv, v:val)'), ',')
+          \ 'stripedCamel#unique#synID(prefix, "p", lv, v:val)'), ',')
     exe 'syn cluster' stripedCamel#unique#synGroupID(prefix, 'Operators', lv)
           \ 'contains='. join(map(range(len(conf.syntax_border)),
-          \ 'stripedCamel#uniqu#synID(prefix, "o", lv, v:val)'), ',')
+          \ 'stripedCamel#unique#synID(prefix, "o", lv, v:val)'), ',')
   endfor
   exe 'syn cluster' prefix .'Regions contains='.
         \ join(map(range(cycle),
-        \ '"@". stripedCamel#uniqu#synGroupID(prefix, "Regions", v:val)'), ',')
+        \ '"@". stripedCamel#unique#synGroupID(prefix, "Regions", v:val)'), ',')
   exe 'syn cluster' prefix .'syntax_border contains='.
         \ join(map(range(cycle),
-        \ '"@". stripedCamel#uniqu#synGroupID(prefix, "syntax_border", v:val)'), ',')
+        \ '"@". stripedCamel#unique#synGroupID(prefix, "syntax_border", v:val)'), ',')
   exe 'syn cluster' prefix .'Operators contains='.
         \ join(map(range(cycle),
-        \ '"@". stripedCamel#uniqu#synGroupID(prefix, "Operators", v:val)'), ',')
+        \ '"@". stripedCamel#unique#synGroupID(prefix, "Operators", v:val)'), ',')
   if has_key(conf, 'after') | return | endif
 
   for cmd in conf.after
