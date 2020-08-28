@@ -120,6 +120,7 @@ function! s:gen_conf(ft)
         \   'syn_name_prefix' :
         \     substitute(a:ft, '\v\A+(\a)', '\u\1', 'g') .'stripedCamel'
         \ }, default_conf), af_conf)
+
   let conf.cycle = (has('termguicolors') && &termguicolors)
         \ || has('gui_running')
         \ ? s:lcm(len(conf.guifgs), len(conf.guis))
