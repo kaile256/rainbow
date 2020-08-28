@@ -1,7 +1,7 @@
 " Copyright 2013 LuoChen (luochen1990@gmail.com). Licensed under the Apache License 2.0.
 
-function! s:trim(s)
-  return substitute(a:s, '\v^\s*(.{-})\s*$', '\1', '')
+function! s:trim_spaces_around(s)
+  return matchstr(a:s, '^\s*\zs.\{-}\ze\s*$')
 endfunction
 
 function! s:concat(strs)
@@ -36,13 +36,13 @@ function! s:resolve_parenthesis_with(init_state, p)
           \ matchstr(s, '^[^=]\+=\zs.*')
           \ ]
     if k ==# 'step'
-      let op = s:trim(v)
+      let op = s:trim_spaces_around(v)
     elseif k ==# 'contains_prefix'
-      let contains_prefix = s:trim(v)
+      let contains_prefix = s:trim_spaces_around(v)
     elseif k ==# 'contains'
-      let contains = s:concat([contains, s:trim(v)])
+      let contains = s:concat([contains, s:trim_spaces_around(v)])
     elseif k ==# 'containedin'
-      let containedin = s:concat([containedin, s:trim(v)])
+      let containedin = s:concat([containedin, s:trim_spaces_around(v)])
     elseif k ==# 'contained'
       let contained = 1
     else
