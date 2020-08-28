@@ -116,15 +116,18 @@ function! s:gen_conf(ft)
     return 0
   endif
 
-  let conf = extend(extend({
-        \   'syn_name_prefix' :
+  let conf = {
+        \ 'syn_name_prefix' :
         \     substitute(a:ft, '\v\A+(\a)', '\u\1', 'g') .'stripedCamel'
-        \ }, default_conf), af_conf)
+        \ }
+  let conf = extend(conf, default_conf)
+  let conf = extend(conf, af_conf)
 
   let conf.cycle = (has('termguicolors') && &termguicolors)
         \ || has('gui_running')
         \ ? s:lcm(len(conf.guifgs), len(conf.guis))
         \ : s:lcm(len(conf.ctermfgs), len(conf.cterms))
+
   return conf
 endfunction
 
