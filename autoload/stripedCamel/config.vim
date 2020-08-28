@@ -40,14 +40,14 @@ call s:get_config('highlight', {
 
 call s:get_config('syntax_global', {
       \ 'prefix': 'stripedCamel',
-      \ 'regexp': ['\u[a-z0-9]'],
+      \ 'regexp': ['\wzs\u[a-z0-9]'],
       \ 'option': ['contained', 'skipwhite', 'skipempty'],
       \ })
 
 call s:get_config('syntax_as_filetypes', {
       \ '_': {},
       \ 'vim': {
-      \   'regexp': ['#\w\+'],
+      \   'regexp': ['#\zs\w\+'],
       \   'option': ['contained', 'skipwhite', 'skipempty'],
       \ }
       \ })
