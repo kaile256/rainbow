@@ -22,7 +22,7 @@ function! s:resolve_parenthesis_with(init_state, pattern)
         \ options
         \ ] = a:init_state
 
-  " preprocess the old style syntax_border config
+  " preprocess the old style syntax.regexp config
   let pattern = type(a:pattern) != type([])
         \ ? a:pattern
         \ : len(a:pattern) == 3
@@ -67,7 +67,7 @@ endfunction
 function! s:resolve_parenthesis_from_config(config)
   return s:resolve_parenthesis_with([
         \ '', 0, '', a:config.contains_prefix, '', a:config.operators
-        \ ], a:config.syntax_options)
+        \ ], a:config.syntax.options)
 endfunction
 
 function! stripedCamel#syntax#update(config)
@@ -77,9 +77,9 @@ function! stripedCamel#syntax#update(config)
 
   let glob_paran_opts = s:resolve_parenthesis_from_config(conf)
 
-  for id in range(len(conf.syntax_regexp))
+  for id in range(len(conf.syntax.regexp))
     let [humpOfCamel, contained, containedin, contains_prefix, contains, options] =
-          \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
+          \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax.regexp[id])
     for lv in range(cycle)
       " Sample Format:
       " syn match fooFunctionStripedCamel_lv1 '\u[a-z0-9]\+'
@@ -112,7 +112,7 @@ function! stripedCamel#syntax#clear(config)
   let conf = a:config
   let prefix = conf.syntax.prefix
 
-  for id in range(len(conf.syntax_regexp))
+  for id in range(len(conf.syntax.regexp))
     for lv in range(conf.cycle)
       let group = stripedCamel#unique#synID(prefix, 'o', lv, id)
       exe 'syn clear'. group

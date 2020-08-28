@@ -3,7 +3,7 @@ function! stripedCamel#highlight#update(config)
   let conf = a:config
   let prefix = conf.syntax.prefix
 
-  for id in range(len(conf.syntax_regexp))
+  for id in range(len(conf.syntax.regexp))
     for lv in range(conf.cycle)
       let [pid, oid] = [
             \ stripedCamel#unique#synID(prefix, 'p', lv, id),
@@ -31,7 +31,7 @@ function! stripedCamel#highlight#clear(config)
   let conf = a:config
   let prefix = conf.syntax.prefix
 
-  for id in range(len(conf.syntax_regexp))
+  for id in range(len(conf.syntax.regexp))
     for lv in range(conf.cycle)
       let [pid, oid] = [
             \ stripedCamel#unique#synID(prefix, 'p', lv, id),
