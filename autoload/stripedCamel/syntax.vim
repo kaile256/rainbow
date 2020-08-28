@@ -81,12 +81,7 @@ function! stripedCamel#syntax#update(config)
     let [humpOfCamel, contained, containedin, contains_prefix, contains, options] =
           \ s:resolve_parenthesis_with(glob_paran_opts, conf.syntax_border[id])
     for lv in range(cycle)
-      let lv2 = ((lv + cycle - 1) % cycle)
-      let [rid, pid, gid2] = [
-            \ stripedCamel#unique#synID(prefix, 'r', lv, id),
-            \ stripedCamel#unique#synID(prefix, 'p', lv, id),
-            \ stripedCamel#unique#synGroupID(prefix, 'Regions', lv2)
-            \ ]
+      let rid = stripedCamel#unique#synID(prefix, 'r', lv, id)
 
       if len(options) > 2
         exe 'syn match' stripedCamel#unique#synID(prefix, 'o', lv, id)
