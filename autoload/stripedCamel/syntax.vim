@@ -72,7 +72,7 @@ endfunction
 
 function! stripedCamel#syntax#update(config)
   let conf = a:config
-  let prefix = conf.syn_name_prefix
+  let prefix = conf.syntax.prefix
   let cycle = conf.cycle
 
   let glob_paran_opts = s:resolve_parenthesis_from_config(conf)
@@ -110,7 +110,7 @@ endfunction
 
 function! stripedCamel#syntax#clear(config)
   let conf = a:config
-  let prefix = conf.syn_name_prefix
+  let prefix = conf.syntax.prefix
 
   for id in range(len(conf.syntax_border))
     for lv in range(conf.cycle)

@@ -39,6 +39,7 @@ call s:get_config('highlight', {
       \ })
 
 call s:get_config('syntax_global', {
+      \ 'prefix': 'stripedCamel',
       \ 'regexp': ['\u[a-z0-9]'],
       \ 'option': ['contained', 'skipwhite', 'skipempty'],
       \ })
