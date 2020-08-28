@@ -97,7 +97,7 @@ function! s:gen_conf(ft)
 endfunction
 
 function! stripedCamel#config#generate(ft)
-  let fts = split(a:ft, '\.')
+  let fts = split(a:ft, '\.') " such as 'javascript.jsx'.
   let configs = map(fts, 's:gen_conf(v:val)')
 
   " Return an empty list as s:gen_conf() returns 0.
