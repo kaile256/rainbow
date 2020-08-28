@@ -60,14 +60,6 @@ function! s:resolve_parenthesis_from_config(config)
         \ ], a:config.syntax_options)
 endfunction
 
-function! s:synID(prefix, group, lv, id)
-  return a:prefix .'_lv'. a:lv .'_'. a:group . a:id
-endfunction
-
-function! s:synGroupID(prefix, group, lv)
-  return a:prefix . a:group .'_lv'. a:lv
-endfunction
-
 function! stripedCamel#syntax#update(config)
   let conf = a:config
   let prefix = conf.syn_name_prefix
